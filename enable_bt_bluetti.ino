@@ -5,8 +5,10 @@
 
 // Potentiometer value
 int potValue = 0;
-int delayy = 1000*30;
+// int delayy = 1000*30;
+int delayy = 1000*15;
 int writecount = 0;
+int failcount = 0;
 
 // The remote service we wish to connect to.
 static BLEUUID serviceUUID("0000ff00-0000-1000-8000-00805f9b34fb");
@@ -167,9 +169,43 @@ void loop() {
 
   if (writecount>50)
   {
-  Serial.println("Going to sleep now");
-  esp_deep_sleep_start();
-  Serial.println("This will never be printed");
+    Serial.println("Going to sleep now");
+    esp_deep_sleep_start();
+    Serial.println("This will never be printed");
+  }
+    if (failcount>10)
+  {
+    Serial.println("Restarting in 10 seconds");
+    digitalWrite(LED,HIGH);
+    delay(100);
+    digitalWrite(LED,LOW);
+    delay(100);
+    digitalWrite(LED,HIGH);
+    delay(100);
+    digitalWrite(LED,LOW);
+    delay(100);
+    digitalWrite(LED,HIGH);
+    delay(100);
+    digitalWrite(LED,LOW);
+    delay(100);
+    digitalWrite(LED,HIGH);
+    delay(100);
+    digitalWrite(LED,LOW);
+    delay(100);
+    digitalWrite(LED,HIGH);
+    delay(100);
+    digitalWrite(LED,LOW);
+    delay(100);
+    digitalWrite(LED,HIGH);
+    delay(100);
+    digitalWrite(LED,LOW);
+    delay(100);
+    digitalWrite(LED,HIGH);
+    delay(100);
+    digitalWrite(LED,LOW);
+    delay(100);
+    delay(10000);
+    ESP.restart();
   }
     // potValue = analogRead(potPin);
   // Serial.println("input: "+potValue);
@@ -233,8 +269,9 @@ digitalWrite(LED,HIGH);
    delay(300);
   digitalWrite(LED,LOW);
   lastTimeWrite = millis();
-  delayy=1000*60*5;
-  writecount=writecount+1;
+  // delayy=1000*60*5;
+  // writecount=writecount+1;
+  writecount++;
 
     // Set the characteristic's value to be the array of bytes that is actually a string.
     // pRemoteCharacteristic->writeValue(newValue.c_str(), newValue.length());
@@ -242,8 +279,22 @@ digitalWrite(LED,HIGH);
     BLEDevice::getScan()->start(0);  // this is just example to start scan after disconnect, most likely there is better way to do it in arduino
        Serial.println("getScan()->start(0)");
   }
+
+  if (connected)
+  {
+
+  }
+  else
+  {
+      digitalWrite(LED,HIGH);
+    delay(100);
+    digitalWrite(LED,LOW);
+      failcount++;
+      Serial.println("Not connected");
+  }
       // lastTime = millis();
   //  }
+
   
   
   delay(delayy); // Delay a second between loops.
