@@ -1,8 +1,3 @@
-/*********
-  Rui Santos
-  Complete project details at https://RandomNerdTutorials.com  
-*********/
-
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <WiFi.h>
@@ -30,12 +25,15 @@ int numberOfDevices;
 DeviceAddress tempDeviceAddress; 
 float tempC1=0.0;
 float tempC2=0.0;
+float tempC3=0.0;
+float tempC4=0.0;
+float tempC5=0.0;
 
 // the following variables are unsigned longs because the time, measured in
 // milliseconds, will quickly become a bigger number than can be stored in an int.
 unsigned long lastTime = 0;
 // Timer set to 10 minutes (600000)
-unsigned long timerDelay = 600000;
+unsigned long timerDelay = 600000*2;
 // Set timer to 5 seconds (5000)
 // unsigned long timerDelay = 5000;
 
@@ -89,7 +87,7 @@ void loop(){
       HTTPClient http;
       readTemps();
 
-      String serverPath = serverName + "?t1="+tempC1+"&t2="+tempC2;
+      String serverPath = serverName + "?t1="+tempC1+"&t2="+tempC2+"&t3="+tempC3+"&t4="+tempC4+"&t5="+tempC5;
       
       // Your Domain name with URL path or IP address with path
       http.begin(serverPath.c_str());
@@ -138,8 +136,8 @@ void readTemps()
       float tempC = sensors.getTempC(tempDeviceAddress);
       Serial.print("Temp C: ");
       Serial.print(tempC);
-      Serial.print(" Temp F: ");
-      Serial.println(DallasTemperature::toFahrenheit(tempC)); // Converts tempC to Fahrenheit
+      // Serial.print(" Temp F: ");
+      // Serial.println(DallasTemperature::toFahrenheit(tempC)); // Converts tempC to Fahrenheit
 
       if (i==0)
       {
@@ -149,8 +147,18 @@ void readTemps()
       {
         tempC2=tempC;
       }
-
-      
+      if (i==2)
+      {
+        tempC3=tempC;
+      }
+      if (i==3)
+      {
+        tempC4=tempC;
+      }
+      if (i==4)
+      {
+        tempC5=tempC;
+      }
     }
   }
   // delay(5000);
