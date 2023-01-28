@@ -5,8 +5,8 @@
 
 // Potentiometer value
 int potValue = 0;
-// int delayy = 1000*30;
-int delayy = 1000*15;
+int delayy = 1000*30;
+// int delayy = 1000*15;
 int writecount = 0;
 int failcount = 0;
 
@@ -42,8 +42,8 @@ static BLEAdvertisedDevice* myDevice;
 
 unsigned long lastTime = 0;
 unsigned long lastTimeWrite = 0;
-// unsigned long delaytoload = 1000*100;//100sec
-unsigned long delaytoload = 1000*5;//100sec
+unsigned long delaytoload = 1000*100;//100sec
+// unsigned long delaytoload = 1000*5;//100sec
 // Timer set to 10 minutes (600000)
 unsigned long timerDelay = 600000;
 // Set timer to 5 seconds (5000)
@@ -135,17 +135,17 @@ class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
    */
   void onResult(BLEAdvertisedDevice advertisedDevice) {
     Serial.print("BLE Advertised Device found: ");
-    Serial.println(advertisedDevice.toString().c_str());
+    // Serial.println(advertisedDevice.toString().c_str());
     
     // Serial.println(advertisedDevice.getName().toString().c_str());
     String curname = advertisedDevice.getName().c_str();
 
     // Serial.println(curname+" vs "+advertisedDevice.getName());
-    Serial.println(curname);
+    // Serial.println(curname);
 
     // We have found a device, let us now see if it contains the service we are looking for.
     // if (advertisedDevice.haveServiceUUID() && advertisedDevice.isAdvertisingService(serviceUUID)) {//For Bluetti
-    if (curname=="EF-R00653") {
+    if ((curname!="")&&(curname=="EF-R00653")) {
       Serial.println("FOUND IT");
       BLEDevice::getScan()->stop();
       myDevice = new BLEAdvertisedDevice(advertisedDevice);
